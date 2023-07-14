@@ -11,6 +11,24 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DocumentIO.Application\DocumentIO.Application.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\DocumentIO.Domain\DocumentIO.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\DocumentIO.Infrastructure\DocumentIO.Infrastructure.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Utility\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utility\" />
+  </ItemGroup>
 </Project>
