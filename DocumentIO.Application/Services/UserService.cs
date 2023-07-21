@@ -14,12 +14,12 @@ namespace DocumentIO.Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task<User> GetUserByIdAsync(long userId)
+        public async Task<User?> GetUserByIdAsync(long userId)
         {
             return await _userRepository.GetUserByIdAsync(userId);
         }
 
-        public async Task<User> GetUserByUsernameAsync(string username)
+        public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _userRepository.GetUserByUsernameAsync(username);
         }

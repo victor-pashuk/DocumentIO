@@ -15,12 +15,12 @@ namespace DocumentIO.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<User> GetUserByIdAsync(int userId)
+        public async Task<User?> GetUserByIdAsync(long userId)
         {
             return await _dbContext.Users.FindAsync(userId);
         }
 
-        public async Task<User> GetUserByUsernameAsync(string username)
+        public async Task<User?> GetUserByUsernameAsync(string username)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(u => u.Username == username);
         }

@@ -2,13 +2,10 @@
 
 namespace DocumentIO.Domain.Models
 {
-    public class SharingLink
+    public class SharedLink
     {
         [Key]
         public long Id { get; set; }
-
-        [Required]
-        public required string Token { get; set; }
 
         [Required]
         public DateTime ExpirationDateTime { get; set; }
@@ -17,6 +14,7 @@ namespace DocumentIO.Domain.Models
         public long DocumentId { get; set; }
 
         public Document? Document { get; set; }
+
     }
 }
 

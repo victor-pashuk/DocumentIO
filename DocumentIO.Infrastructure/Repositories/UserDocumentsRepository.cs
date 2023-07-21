@@ -15,7 +15,7 @@ namespace DocumentIO.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<UserDocuments> GetUserDocumentsByUserIdAsync(int userId)
+        public async Task<UserDocuments?> GetUserDocumentsByUserIdAsync(long userId)
         {
             return await _dbContext.UserDocuments
                 .Include(ud => ud.Documents)

@@ -13,7 +13,7 @@ namespace DocumentIO.Infrastructure.Data
         public DbSet<Document> Documents { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserDocuments> UserDocuments { get; set; }
-        public DbSet<SharingLink> SharingLinks { get; set; }
+        public DbSet<SharedLink> SharingLinks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -23,7 +23,7 @@ namespace DocumentIO.Infrastructure.Data
             modelBuilder.Entity<Document>().ToTable("Documents");
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<UserDocuments>().ToTable("UserDocuments");
-            modelBuilder.Entity<SharingLink>().ToTable("SharingLinks");
+            modelBuilder.Entity<SharedLink>().ToTable("SharingLinks");
 
             modelBuilder.Entity<User>()
                 .HasOne(u => u.UserDocuments)

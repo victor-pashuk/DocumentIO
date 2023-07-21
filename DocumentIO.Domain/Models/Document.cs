@@ -13,7 +13,7 @@ namespace DocumentIO.Domain.Models
         public string Type { get; set; }
 
         [Required]
-        public byte[] Data { get; set; }
+        public string FileGuid { get; set; }
 
         public long CreatorId { get; set; }
 
@@ -23,11 +23,11 @@ namespace DocumentIO.Domain.Models
 
         public int DownloadCount { get; set; }
 
-        public Document(string name, string type, byte[] data, long creatorId)
+        public Document(string name, string type, string fileGuid, long creatorId)
         {
             Name = name;
             Type = type;
-            Data = data;
+            FileGuid = fileGuid;
             CreatorId = creatorId;
             UploadDateTime = DateTime.UtcNow;
             DownloadCount = 0;

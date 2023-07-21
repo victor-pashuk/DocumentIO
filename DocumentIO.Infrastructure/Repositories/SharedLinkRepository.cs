@@ -1,25 +1,24 @@
 ﻿using DocumentIO.Application.Interfaces.Repositories;
 using DocumentIO.Domain.Models;
 using DocumentIO.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace DocumentIO.Infrastructure.Repositories
 {
-    public class SharingLinkRepository : ISharingLinkRepository
+    public class SharedLinkRepository : ISharedLinkRepository
     {
         private readonly DocumentDbContext _dbContext;
 
-        public SharingLinkRepository(DocumentDbContext dbContext)
+        public SharedLinkRepository(DocumentDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<SharingLink> GetSharingLinkByTokenAsync(string token)
+        public async Task<SharedLink?> GetSharedLinkByIdAsync(long id)
         {
-            return await _dbContext.SharingLinks.FirstOrDefaultAsync(sl => sl.Token == token);
+            return await _dbContext.SharingLinks.FindAsync(id);
         }
 
-        public async Task AddSharingLinkAsync(SharingLink sharingLink)
+        public async Task AddSharedLinkAsync(SharedLink sharingLink)
         {
             await _dbContext.SharingLinks.AddAsync(sharingLink);
             await _dbContext.SaveChangesAsync();

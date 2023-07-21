@@ -7,7 +7,7 @@ namespace DocumentIO.Application.Interfaces.Repositories
     {
         Task AddDocumentToUserAsync(UserDocuments userDocuments, Document document);
         Task<UserDocuments> CreateUserDocumentsAsync(UserDocuments userDocuments);
-        Task<UserDocuments> GetUserDocumentsByUserIdAsync(long userId);
+        Task<UserDocuments?> GetUserDocumentsByUserIdAsync(long userId);
         Task RemoveDocumentFromUserAsync(UserDocuments userDocuments, Document document);
     }
 }

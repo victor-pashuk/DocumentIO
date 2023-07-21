@@ -1,7 +1,9 @@
 ﻿
+using System.IO;
 using DocumentIO.Application.Interfaces.Repositories;
 using DocumentIO.Application.Interfaces.Services;
 using DocumentIO.Domain.Models;
+using ShortUrl;
 
 namespace DocumentIO.Application.Services
 {
@@ -16,14 +18,14 @@ namespace DocumentIO.Application.Services
             _userDocumentsRepository = userDocumentsRepository;
         }
 
-        public async Task<Document> GetDocumentByIdAsync(int documentId)
+        public async Task<Document?> GetDocumentByIdAsync(long documentId)
         {
             return await _documentRepository.GetDocumentByIdAsync(documentId);
         }
 
-        public async Task<long> UploadDocumentAsync(string name, string type, byte[] data, long creatorId)
+        public async Task<long> CreateDocumentAsync(string name, string type, string fileGuid, long creatorId)
         {
-            var document = new Document(name, type, data, creatorId);
+            var document = new Document(name, type, fileGuid, creatorId);
             var documentId = await _documentRepository.CreateDocumentAsync(document);
 
             var userDocuments = await _userDocumentsRepository.GetUserDocumentsByUserIdAsync(creatorId);
@@ -49,7 +51,7 @@ namespace DocumentIO.Application.Services
             await _documentRepository.UpdateDocumentAsync(document);
         }
 
-        public async Task DeleteDocumentAsync(int documentId)
+        public async Task DeleteDocumentAsync(long documentId)
         {
             var document = await _documentRepository.GetDocumentByIdAsync(documentId);
             if (document != null)
@@ -70,9 +72,10 @@ namespace DocumentIO.Application.Services
             return userDocuments?.Documents ?? Enumerable.Empty<Document>();
         }
 
-        public async Task IncrementDownloadCountAsync(int documentId)
+        public async Task IncrementDownloadCountAsync(long documentId)
         {
             await _documentRepository.IncrementDownloadCountAsync(documentId);
         }
+
     }
 }

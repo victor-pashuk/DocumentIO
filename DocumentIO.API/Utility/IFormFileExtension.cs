@@ -2,7 +2,7 @@
 {
     public static class IFormFileExtension
     {
-        public async static Task<byte[]> ToArray(this IFormFile file)
+        public async static Task<byte[]> ToArrayAsync(this IFormFile file)
         {
             byte[] data;
             using (var memoryStream = new MemoryStream())

@@ -1,7 +1,7 @@
-﻿// Controllers/DocumentController.cs
-
+﻿
 using DocumentIO.API.Utility;
 using DocumentIO.Application.Interfaces.Services;
+using DocumentIO.Application.Utility;
 using DocumentIO.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,14 +12,16 @@ namespace DocumentIO.API.Controllers
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentService _documentService;
+        private readonly IFileStorageService _fileStorageService;
 
-        public DocumentController(IDocumentService documentService)
+        public DocumentController(IDocumentService documentService, IFileStorageService fileStorageService)
         {
             _documentService = documentService;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Document>> GetDocumentById(int id)
+        public async Task<ActionResult<Document>> GetDocumentById(long id)
         {
             var document = await _documentService.GetDocumentByIdAsync(id);
             if (document == null)
@@ -30,14 +32,20 @@ namespace DocumentIO.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateDocument(IFormFile file, [FromForm] string name, [FromForm] string type, [FromForm] int creatorId)
+        public async Task<ActionResult<int>> CreateDocument(IFormFile file, [FromForm] string name, [FromForm] string type, [FromForm] long creatorId)
         {
-            var documentId = await _documentService.UploadDocumentAsync(name, type, await file.ToArray(), creatorId);
+
+            var fileName = $"{name}.{type}";
+            var fileGuid = await _fileStorageService.UploadFileAsync(fileName, await file.ToArrayAsync());
+
+
+            var documentId = await _documentService.CreateDocumentAsync(name, type, fileGuid, creatorId);
+
             return CreatedAtAction(nameof(GetDocumentById), new { id = documentId }, documentId);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument(int id, [FromBody] Document document)
+        public async Task<IActionResult> UpdateDocument(long id, [FromBody] Document document)
         {
             if (id != document.Id)
             {
@@ -49,32 +57,39 @@ namespace DocumentIO.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDocument(int id)
+        public async Task<IActionResult> DeleteDocument(long id)
         {
             await _documentService.DeleteDocumentAsync(id);
             return NoContent();
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Document>>> GetDocumentsByUserId(int userId)
+        public async Task<ActionResult<IEnumerable<Document>>> GetDocumentsByUserId(long userId)
         {
             var documents = await _documentService.GetDocumentsByUserIdAsync(userId);
             return Ok(documents);
         }
 
-        [HttpPost("{id}/download")]
-        public async Task<IActionResult> DownloadDocument(int id)
+        [HttpGet("{id}/download")]
+        public async Task<IActionResult> DownloadDocument(long id)
         {
             var document = await _documentService.GetDocumentByIdAsync(id);
             if (document == null)
             {
                 return NotFound();
             }
+            var fileName = $"{document.Name}.{document.Type}";
 
-            // Perform download logic here
-            // e.g., return the document file as a download response
+            var fileData = await _fileStorageService.DownloadFileAsync(document.FileGuid);
+            if (fileData == null)
+            {
+                return NotFound();
+            }
+            await _documentService.IncrementDownloadCountAsync(document.Id);
+            var contentType = ContentTypeHelper.GetContentType(fileName);
 
-            return Ok();
+            return File(fileData, contentType, fileName);
         }
+
     }
 }

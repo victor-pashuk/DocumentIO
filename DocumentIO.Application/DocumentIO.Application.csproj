@@ -11,14 +11,19 @@
     <None Remove="Interfaces\Services\" />
     <None Remove="Interfaces\Repositories\" />
     <None Remove="Services\" />
+    <None Remove="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Interfaces\Services\" />
     <Folder Include="Interfaces\Repositories\" />
     <Folder Include="Services\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DocumentIO.Domain\DocumentIO.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SanderSade.UrlShortener" Version="1.0.0" />
   </ItemGroup>
 </Project>

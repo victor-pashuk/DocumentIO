@@ -16,7 +16,7 @@ namespace DocumentIO.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Document> GetDocumentByIdAsync(long documentId)
+        public async Task<Document?> GetDocumentByIdAsync(long documentId)
         {
             return await _dbContext.Documents.FindAsync(documentId);
         }
